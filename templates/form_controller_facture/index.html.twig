@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formulaire Facture{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Formulaire Facture</h1>
+    <form method="post" action="{{ path('app_form_controller_facture') }}">
+        <div class="mb-3">
+            <label for="numero" class="form-label">Numéro de facture:</label>
+            <input type="text" class="form-control" id="numero" name="numero" required>
+        </div>
+        <div class="mb-3">
+            <label for="age" class="form-label">Âge:</label>
+            <input type="number" class="form-control" id="age" name="age" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Générer PDF</button>
+    </form>
+</div>
+{% endblock %}

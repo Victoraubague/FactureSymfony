@@ -1,0 +1,85 @@
+<?php
+
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use TCPDF;
+
+// Inclure l'autoloader de Composer
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+class PdfController extends AbstractController
+{
+    #[Route('/pdf', name: 'app_pdf')]
+    public function generatePdf(): Response
+    {
+        // Création d'une nouvelle instance de TCPDF
+        $pdf = new TCPDF();
+
+        // Ajout d'une nouvelle page
+        $pdf->AddPage();
+
+        // Entête de la facture
+        $pdf->SetFont('helvetica', 'B', 16); // Gras et plus gros
+        $pdf->Cell(0, 10, 'LUDOVIC AUBAGUE', 0, 0); // À gauche
+        $pdf->SetFont('helvetica', 'B', 14); // Retour à la taille normale
+        $pdf->Cell(0, 10, 'FACTURE', 0, 1, 'R'); // À droite
+
+        $pdf->Ln(10); // Saut de ligne de 10 points
+
+        // Informations de contact
+        $pdf->SetFont('helvetica', '', 12);
+        $pdf->Cell(0, 10, 'ludovic.aubague.plomberie@gmail.com', 0, 1, 'L');
+        $pdf->Cell(0, 10, '898 route de Noaillat, 01 290 Cormoranche Sur Saône', 0, 1, 'L');
+        $pdf->Cell(0, 10, 'N° SIRET: 891 940 751 000 11', 0, 1, 'L');
+        $pdf->Cell(0, 10, 'RCDP:2021012714511665-17-F', 0, 1, 'L');
+
+        $pdf->Ln(10); // Saut de ligne de 10 points
+
+        // Informations sur la facture
+        $pdf->SetFont('helvetica', 'B', 12);
+        $pdf->Cell(0, 10, 'Facturé à: Facture n° 244', 0, 1);
+        $pdf->Cell(0, 10, 'Mairie St Laurent sur Saône', 0, 1);
+        $pdf->Cell(0, 10, '1 Place Jules Goyon', 0, 1);
+        $pdf->Cell(0, 10, '01750 St Laurent sur Saône', 0, 1);
+        $pdf->Cell(0, 10, 'Date: 24/10/2023', 0, 1);
+
+        // Tableau des articles
+        $pdf->SetFont('helvetica', 'B', 12);
+        $pdf->Cell(0, 10, 'QTÉ    DÉSIGNATION    PRIX UNIT.    MONTANT', 0, 1);
+
+        $pdf->SetFont('helvetica', '', 12);
+        $pdf->Cell(0, 10, '1      Forfait débouchage par tringlage vidange évier dans placard apt M Drevet avec pose du té de visite pvc diametre 40. (vidange bouché dans plomb encastré dans mur). Appelle de M Martinez le 23/10/2023.', 0, 1);
+        $pdf->Cell(0, 10, '120,00       120,00', 0, 1);
+
+        // Total HT
+        $pdf->SetFont('helvetica', 'B', 12);
+        $pdf->Cell(0, 10, 'Total HT      120,00', 0, 1);
+
+        // TVA
+        $pdf->SetFont('helvetica', '', 12);
+        $pdf->Cell(0, 10, '0.0%      0,00', 0, 1);
+
+        // Total TTC
+        $pdf->SetFont('helvetica', 'B', 12);
+        $pdf->Cell(0, 10, 'TOTAL TTC      120,00 €', 0, 1);
+
+        // Conditions de paiement
+        $pdf->SetFont('helvetica', '', 12);
+        $pdf->Cell(0, 10, 'Conditions et modalités de paiement:', 0, 1);
+        $pdf->Cell(0, 10, 'Chèque/ Virement bancaire', 0, 1);
+        $pdf->Cell(0, 10, 'IBAN: FR76 1027 8073 9300 0204 7830 188', 0, 1);
+        $pdf->Cell(0, 10, 'BIC: CMCIFR2A TVA non applicable. Article 293B du CGI', 0, 1);
+
+        // Génération du contenu PDF en tant que chaîne
+        $pdfContent = $pdf->Output('', 'S');
+
+        // Retourne la réponse avec le contenu PDF
+        return new Response($pdfContent, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="facture.pdf"'
+        ]);
+    }
+}
