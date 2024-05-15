@@ -3,83 +3,122 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use TCPDF;
 
-// Inclure l'autoloader de Composer
-require_once __DIR__ . '/../../vendor/autoload.php';
-
-class PdfController extends AbstractController
+class FormControllerFactureController extends AbstractController
 {
-    #[Route('/pdf', name: 'app_pdf')]
-    public function generatePdf(): Response
+    #[Route('/form/controller/facture', name: 'app_form_controller_facture', methods: ['GET', 'POST'])]
+    public function form(Request $request): Response
+    {
+        // Récupérer les données du formulaire
+        $numero = $request->request->get('numero');
+        $date = $request->request->get('date');
+        $adresse1 = $request->request->get('adresse1');
+        $adresse2 = $request->request->get('adresse2');
+        $ville = $request->request->get('ville');
+
+        // Si le formulaire a été soumis
+        if ($numero !== null && $date !== null && $adresse1 !== null && $adresse2 !== null && $ville !== null) {
+            // Générer le PDF avec les données soumises
+            $pdfContent = $this->generatePdf($numero, $date, $adresse1, $adresse2, $ville);
+
+            // Enregistrer le PDF sur le serveur
+            $pdfPath = $this->savePdf($pdfContent);
+
+            // Rediriger vers la page de confirmation avec le chemin du PDF
+            return $this->redirectToRoute('app_confirmation', ['pdf_path' => $pdfPath]);
+        }
+
+        // Afficher le formulaire
+        return $this->render('form_controller_facture/index.html.twig');
+    }
+
+    private function generatePdf(string $numero, string $date, string $adresse1, string $adresse2, string $ville): string
     {
         // Création d'une nouvelle instance de TCPDF
-        $pdf = new TCPDF();
-
-        // Ajout d'une nouvelle page
+        $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
+        
+        $pdf->SetMargins(10, 10, 10);
+        $pdf->SetFont('helvetica', '', 10);
         $pdf->AddPage();
-
-        // Entête de la facture
-        $pdf->SetFont('helvetica', 'B', 16); // Gras et plus gros
+    
+        // Informations d'entête
+        $pdf->SetFont('helvetica', 'B', 16);
         $pdf->Cell(0, 10, 'LUDOVIC AUBAGUE', 0, 0); // À gauche
-        $pdf->SetFont('helvetica', 'B', 14); // Retour à la taille normale
+        $pdf->SetFont('helvetica', 'B', 14);
         $pdf->Cell(0, 10, 'FACTURE', 0, 1, 'R'); // À droite
-
         $pdf->Ln(10); // Saut de ligne de 10 points
-
+    
         // Informations de contact
         $pdf->SetFont('helvetica', '', 12);
         $pdf->Cell(0, 10, 'ludovic.aubague.plomberie@gmail.com', 0, 1, 'L');
         $pdf->Cell(0, 10, '898 route de Noaillat, 01 290 Cormoranche Sur Saône', 0, 1, 'L');
         $pdf->Cell(0, 10, 'N° SIRET: 891 940 751 000 11', 0, 1, 'L');
         $pdf->Cell(0, 10, 'RCDP:2021012714511665-17-F', 0, 1, 'L');
-
         $pdf->Ln(10); // Saut de ligne de 10 points
-
-        // Informations sur la facture
+        $pdf->Ln(10); // Saut de ligne de 10 points
+    
+        // Partie facturation
         $pdf->SetFont('helvetica', 'B', 12);
-        $pdf->Cell(0, 10, 'Facturé à: Facture n° 244', 0, 1);
-        $pdf->Cell(0, 10, 'Mairie St Laurent sur Saône', 0, 1);
-        $pdf->Cell(0, 10, '1 Place Jules Goyon', 0, 1);
-        $pdf->Cell(0, 10, '01750 St Laurent sur Saône', 0, 1);
-        $pdf->Cell(0, 10, 'Date: 24/10/2023', 0, 1);
-
-        // Tableau des articles
-        $pdf->SetFont('helvetica', 'B', 12);
-        $pdf->Cell(0, 10, 'QTÉ    DÉSIGNATION    PRIX UNIT.    MONTANT', 0, 1);
-
+        $pdf->Cell(100, 10, 'Facturé à', 0, 0, 'L');
         $pdf->SetFont('helvetica', '', 12);
-        $pdf->Cell(0, 10, '1      Forfait débouchage par tringlage vidange évier dans placard apt M Drevet avec pose du té de visite pvc diametre 40. (vidange bouché dans plomb encastré dans mur). Appelle de M Martinez le 23/10/2023.', 0, 1);
-        $pdf->Cell(0, 10, '120,00       120,00', 0, 1);
+        $pdf->Cell(0, 10, 'Facture n° ' . $numero, 0, 1, 'R');
+        $pdf->Cell(0, 10, $adresse1, 0, 0, 'L');
+        $pdf->Cell(0, 10, 'Date ' . $date, 0, 1, 'R');
+        $pdf->Cell(0, 10, $adresse2, 0, 0, 'L');
+        $pdf->Ln();
+        $pdf->Cell(0, 10, $ville, 0, 0, 'L'); // Aligné à gauche, pas de saut de ligne
 
-        // Total HT
-        $pdf->SetFont('helvetica', 'B', 12);
-        $pdf->Cell(0, 10, 'Total HT      120,00', 0, 1);
+        // Positionnement du tableau
+        $pdf->SetXY(10, 150); // X = 10mm, Y = 150mm
+        $cellHeight = 8; // Hauteur de la cellule
 
-        // TVA
+        // Entête du tableau
+        $pdf->SetFont('helvetica', 'B', 12); // Police en gras pour l'entête
+        $pdf->Cell(20, $cellHeight, 'Qté', 1, 0, 'C');
+        $pdf->Cell(120, $cellHeight, 'Désignation', 1, 0, 'C');
+        $pdf->Cell(24, $cellHeight, 'Prix unit.', 1, 0, 'C');
+        $pdf->Cell(28, $cellHeight, 'Montant', 1, 1, 'C'); // Saut de ligne après la dernière cellule
+
+        // Données du tableau
         $pdf->SetFont('helvetica', '', 12);
-        $pdf->Cell(0, 10, '0.0%      0,00', 0, 1);
+        $description = 'Forfait débouchage par tringlage vidange évier dans placard apt M Drevet avec pose du té de visite pvc diametre 40. (vidange bouché dans plomb encastré dans mur). Apelle de M Martinez le 23/10/2023.';
+        $multiCellHeight = $pdf->getStringHeight(120, $description); // Calcul de la hauteur nécessaire
 
-        // Total TTC
-        $pdf->SetFont('helvetica', 'B', 12);
-        $pdf->Cell(0, 10, 'TOTAL TTC      120,00 €', 0, 1);
+        $pdf->Cell(20, $multiCellHeight, '1', 1, 0, 'C');
+        $pdf->MultiCell(120, $multiCellHeight, $description, 1, 'L', false, 0);
+        $pdf->Cell(24, $multiCellHeight, '120,00 €', 1, 0, 'C');
+        $pdf->Cell(28, $multiCellHeight, '120,00 €', 1, 1, 'C'); // Dernière cellule de la ligne pour "Montant"
 
-        // Conditions de paiement
-        $pdf->SetFont('helvetica', '', 12);
-        $pdf->Cell(0, 10, 'Conditions et modalités de paiement:', 0, 1);
-        $pdf->Cell(0, 10, 'Chèque/ Virement bancaire', 0, 1);
-        $pdf->Cell(0, 10, 'IBAN: FR76 1027 8073 9300 0204 7830 188', 0, 1);
-        $pdf->Cell(0, 10, 'BIC: CMCIFR2A TVA non applicable. Article 293B du CGI', 0, 1);
+    // Ajout de trois cellules vides exactement sous "Montant"
+$pdf->Cell(164, $cellHeight, '', 0, 0); // Espace vide pour aligner avec les autres colonnes
+$pdf->Cell(28, $cellHeight, 'aa', 1, 0, 'C'); // Première cellule vide sous "Montant"
+$pdf->Cell(0, $cellHeight, 'cc', 0, 1, 'L'); // Texte "cc" à gauche de "aa"
+
+$pdf->Cell(164, $cellHeight, '', 0, 0); // Espace vide pour aligner avec les autres colonnes
+$pdf->Cell(28, $cellHeight, 'aa', 1, 0, 'C'); // Deuxième cellule vide
+$pdf->Cell(1, $cellHeight, 'cc', 0, 1, 'L'); // Texte "cc" à gauche de "aa"
+
+$pdf->Cell(164, $cellHeight, '', 0, 0); // Espace vide pour aligner avec les autres colonnes
+$pdf->Cell(28, $cellHeight, 'aa', 1, 0, 'C'); // Troisième cellule vide
+$pdf->Cell(0, $cellHeight, 'cc', 0, 1, 'L'); // Texte "cc" à gauche de "aa"
+
 
         // Génération du contenu PDF en tant que chaîne
-        $pdfContent = $pdf->Output('', 'S');
+        return $pdf->Output('', 'S');
+    }
 
-        // Retourne la réponse avec le contenu PDF
-        return new Response($pdfContent, 200, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'attachment; filename="facture.pdf"'
-        ]);
+    private function savePdf(string $pdfContent): string
+    {
+        // Chemin où enregistrer le PDF
+        $pdfPath = 'pdf/' . uniqid('pdf_') . '.pdf';
+
+        // Enregistrement du PDF sur le serveur
+        file_put_contents($pdfPath, $pdfContent);
+
+        return $pdfPath;
     }
 }
