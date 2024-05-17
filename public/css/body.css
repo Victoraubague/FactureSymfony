@@ -1,0 +1,92 @@
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.pdf-list-wrapper {
+    margin: 1em auto;
+    max-width: 800px;
+    width: 95%;
+    font: 18px/1.5 sans-serif;
+}
+
+.pdf-list-wrapper ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.pdf-list-wrapper li {
+    background: #F5F5F5;
+    margin: 0.5em 0;
+    padding: 0.5em;
+    border-radius: 5px;
+}
+
+.pdf-list-wrapper a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.pdf-list-wrapper a:hover {
+    text-decoration: underline;
+}
+
+#sidebar-wrapper {
+    min-width: 250px;
+    max-width: 250px;
+    flex-shrink: 0;
+    transition: all 0.3s;
+}
+
+#page-content-wrapper {
+    flex: 1;
+    padding: 20px;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    min-width: 0;
+    max-width: 0;
+    overflow: hidden;
+}
+
+/* Sidebar Specific Styles */
+.sidebar {
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+    min-width: 250px;
+    max-width: 250px;
+    flex-shrink: 0;
+    transition: all 0.3s;
+}
+
+.sidebar-heading {
+    padding: 1rem;
+    font-size: 1.25rem;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 1px solid #dee2e6;
+    background-color: #343a40;
+    color: #fff;
+}
+
+.sidebar-item {
+    color: #495057;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar-item:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.sidebar-item.active {
+    background-color: #007bff;
+    color: #fff;
+}

@@ -2,139 +2,96 @@
 
 {% block title %}Formulaire Facture{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/body.css') }}">
+{% endblock %}
+
 {% block body %}
-<div class="container mt-5">
-    <h1 class="mb-4">Formulaire Facture</h1>
-    <form method="post" action="{{ path('app_form_controller_facture') }}">
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="numero" class="form-label">Numéro de facture:</label>
-                <input type="text" class="form-control" id="numero" name="numero" required>
-            </div>
-            <div class="col-md-6">
-                <label for="date" class="form-label">Date:</label>
-                <input type="date" class="form-control" id="date" name="date" required>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label for="adresse1" class="form-label">Adresse ligne 1:</label>
-            <input type="text" class="form-control" id="adresse1" name="adresse1" required>
-        </div>
-        <div class="mb-3">
-            <label for="adresse2" class="form-label">Adresse ligne 2:</label>
-            <input type="text" class="form-control" id="adresse2" name="adresse2" required>
-        </div>
-        <div class="mb-3">
-            <label for="ville" class="form-label">Ville:</label>
-            <input type="text" class="form-control" id="ville" name="ville" required>
-        </div>
-        
-        <div id="article-1" class="article-section">
-            <h2>Article 1</h2>
-            <div class="row mb-3">
-                <div class="col-md-3">
-                    <label for="quantite" class="form-label">Quantité:</label>
-                    <input type="number" class="form-control" id="quantite" name="quantite" required>
-                </div>
-                <div class="col-md-3">
-                    <label for="designation" class="form-label">Désignation:</label>
-                    <input type="text" class="form-control" id="designation" name="designation" required>
-                </div>
-                <div class="col-md-3">
-                    <label for="prixUnitaire" class="form-label">Prix Unitaire:</label>
-                    <input type="text" class="form-control" id="prixUnitaire" name="prixUnitaire" required>
-                </div>
-                <div class="col-md-3">
-                    <label for="montant" class="form-label">Montant:</label>
-                    <input type="text" class="form-control" id="montant" name="montant" required>
-                </div>
-            </div>
-        </div>
-        
-        {% for i in 2..8 %}
-        <div id="article-{{ i }}" class="article-section" style="display: none;">
-            <h2>Article {{ i }}</h2>
-            <div class="row mb-3">
-                <div class="col-md-3">
-                    <label for="quantite{{ i-1 }}" class="form-label">Quantité:</label>
-                    <input type="number" class="form-control" id="quantite{{ i-1 }}" name="quantite{{ i-1 }}">
-                </div>
-                <div class="col-md-3">
-                    <label for="designation{{ i-1 }}" class="form-label">Désignation:</label>
-                    <input type="text" class="form-control" id="designation{{ i-1 }}" name="designation{{ i-1 }}">
-                </div>
-                <div class="col-md-3">
-                    <label for="prixUnitaire{{ i-1 }}" class="form-label">Prix Unitaire:</label>
-                    <input type="text" class="form-control" id="prixUnitaire{{ i-1 }}" name="prixUnitaire{{ i-1 }}">
-                </div>
-                <div class="col-md-3">
-                    <label for="montant{{ i-1 }}" class="form-label">Montant:</label>
-                    <input type="text" class="form-control" id="montant{{ i-1 }}" name="montant{{ i-1 }}">
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-        
-        <div class="mb-3">
-            <button type="button" class="btn btn-secondary" id="next-article-btn">Voir l'article suivant</button>
-        </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-primary">Générer PDF</button>
-        </div>
-    </form>
-</div>
+  
+    <!-- /#sidebar-wrapper -->
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let currentArticle = 1;
-        const totalArticles = 8;
-        
-        document.getElementById('next-article-btn').addEventListener('click', function() {
-            if (currentArticle < totalArticles) {
-                currentArticle++;
-                document.getElementById('article-' + currentArticle).style.display = 'block';
-            }
-            if (currentArticle === totalArticles) {
-                this.style.display = 'none';
-            }
-        });
-    });
-</script>
+    <!-- Page Content -->
 
-<style>
-    body {
-        background-color: #f8f9fa;
-        font-family: Arial, sans-serif;
-    }
-    .container {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-        color: #343a40;
-    }
-    .form-label {
-        font-weight: bold;
-        color: #495057;
-    }
-    .form-control {
-        border-radius: 5px;
-    }
-    .btn {
-        border-radius: 5px;
-    }
-    .article-section {
-        border: 1px solid #dee2e6;
-        padding: 15px;
-        border-radius: 5px;
-        background-color: #e9ecef;
-        margin-bottom: 10px;
-    }
-    .article-section h2 {
-        font-size: 1.5rem;
-        color: #007bff;
-    }
-</style>
+        <div class="container-fluid mt-4">
+            <h1 class="mb-4">Formulaire Facture</h1>
+            <form method="post" action="{{ path('app_form_controller_facture') }}">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="numero" class="form-label">Numéro de facture:</label>
+                        <input type="text" class="form-control" id="numero" name="numero" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="date" class="form-label">Date:</label>
+                        <input type="date" class="form-control" id="date" name="date" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="adresse1" class="form-label">Adresse ligne 1:</label>
+                    <input type="text" class="form-control" id="adresse1" name="adresse1" required>
+                </div>
+                <div class="mb-3">
+                    <label for="adresse2" class="form-label">Adresse ligne 2:</label>
+                    <input type="text" class="form-control" id="adresse2" name="adresse2" required>
+                </div>
+                <div class="mb-3">
+                    <label for="ville" class="form-label">Ville:</label>
+                    <input type="text" class="form-control" id="ville" name="ville" required>
+                </div>
+                
+                <div id="article-1" class="article-section">
+                    <h2>Article 1</h2>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="quantite" class="form-label">Quantité:</label>
+                            <input type="number" class="form-control" id="quantite" name="quantite" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="designation" class="form-label">Désignation:</label>
+                            <input type="text" class="form-control" id="designation" name="designation" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="prixUnitaire" class="form-label">Prix Unitaire:</label>
+                            <input type="text" class="form-control" id="prixUnitaire" name="prixUnitaire" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="montant" class="form-label">Montant:</label>
+                            <input type="text" class="form-control" id="montant" name="montant" required>
+                        </div>
+                    </div>
+                </div>
+                
+                {% for i in 2..8 %}
+                <div id="article-{{ i }}" class="article-section" style="display: none;">
+                    <h2>Article {{ i }}</h2>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="quantite{{ i-1 }}" class="form-label">Quantité:</label>
+                            <input type="number" class="form-control" id="quantite{{ i-1 }}" name="quantite{{ i-1 }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="designation{{ i-1 }}" class="form-label">Désignation:</label>
+                            <input type="text" class="form-control" id="designation{{ i-1 }}" name="designation{{ i-1 }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="prixUnitaire{{ i-1 }}" class="form-label">Prix Unitaire:</label>
+                            <input type="text" class="form-control" id="prixUnitaire{{ i-1 }}" name="prixUnitaire{{ i-1 }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="montant{{ i-1 }}" class="form-label">Montant:</label>
+                            <input type="text" class="form-control" id="montant{{ i-1 }}" name="montant{{ i-1 }}">
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <div class="mb-3">
+                    <button type="button" class="btn btn-secondary" id="next-article-btn">Voir l'article suivant</button>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Générer PDF</button>
+                </div>
+            </form>
+        </div>
+
+
 {% endblock %}
