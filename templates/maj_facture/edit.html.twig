@@ -7,91 +7,99 @@
 {% endblock %}
 
 {% block body %}
-  
-    <!-- /#sidebar-wrapper -->
+<div class="example-wrapper">
+    <h1>Mettre à jour la facture</h1>
 
-    <!-- Page Content -->
-
-        <div class="container-fluid mt-4">
-            <h1 class="mb-4">Formulaire Facture</h1>
-            <form method="post" action="{{ path('app_form_controller_facture') }}">
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="numero" class="form-label">Numéro de facture:</label>
-                        <input type="text" class="form-control" id="numero" name="numero" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="date" class="form-label">Date:</label>
-                        <input type="date" class="form-control" id="date" name="date" required>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="adresse1" class="form-label">Adresse ligne 1:</label>
-                    <input type="text" class="form-control" id="adresse1" name="adresse1" required>
-                </div>
-                <div class="mb-3">
-                    <label for="adresse2" class="form-label">Adresse ligne 2:</label>
-                    <input type="text" class="form-control" id="adresse2" name="adresse2" required>
-                </div>
-                <div class="mb-3">
-                    <label for="ville" class="form-label">Ville:</label>
-                    <input type="text" class="form-control" id="ville" name="ville" required>
-                </div>
-                
-                <div id="article-1" class="article-section">
-                    <h2>Article 1</h2>
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <label for="quantite" class="form-label">Quantité:</label>
-                            <input type="number" class="form-control" id="quantite" name="quantite" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="designation" class="form-label">Désignation:</label>
-                            <input type="text" class="form-control" id="designation" name="designation" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="prixUnitaire" class="form-label">Prix Unitaire:</label>
-                            <input type="text" class="form-control" id="prixUnitaire" name="prixUnitaire" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="montant" class="form-label">Montant:</label>
-                            <input type="text" class="form-control" id="montant" name="montant" required>
-                        </div>
-                    </div>
-                </div>
-                
-                {% for i in 2..8 %}
-                <div id="article-{{ i }}" class="article-section" style="display: none;">
-                    <h2>Article {{ i }}</h2>
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <label for="quantite{{ i-1 }}" class="form-label">Quantité:</label>
-                            <input type="number" class="form-control" id="quantite{{ i-1 }}" name="quantite{{ i-1 }}">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="designation{{ i-1 }}" class="form-label">Désignation:</label>
-                            <input type="text" class="form-control" id="designation{{ i-1 }}" name="designation{{ i-1 }}">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="prixUnitaire{{ i-1 }}" class="form-label">Prix Unitaire:</label>
-                            <input type="text" class="form-control" id="prixUnitaire{{ i-1 }}" name="prixUnitaire{{ i-1 }}">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="montant{{ i-1 }}" class="form-label">Montant:</label>
-                            <input type="text" class="form-control" id="montant{{ i-1 }}" name="montant{{ i-1 }}">
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-                
-                <div class="mb-3">
-                    <button type="button" class="btn btn-secondary" id="next-article-btn">Voir l'article suivant</button>
-                </div>
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">Générer PDF</button>
-                </div>
-            </form>
+    <form method="post" action="{{ path('app_maj_facture_edit', {'formId': formId}) }}">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="numero" class="form-label">Numéro de facture:</label>
+                <input type="text" class="form-control" id="numero" name="numero" value="{{ formData.numero|default('') }}" required>
+            </div>
+            <div class="col-md-6">
+                <label for="date" class="form-label">Date:</label>
+                <input type="date" class="form-control" id="date" name="date" value="{{ formData.date|default('') }}" required>
+            </div>
         </div>
+        <div class="mb-3">
+            <label for="adresse1" class="form-label">Adresse ligne 1:</label>
+            <input type="text" class="form-control" id="adresse1" name="adresse1" value="{{ formData.adresse1|default('') }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="adresse2" class="form-label">Adresse ligne 2:</label>
+            <input type="text" class="form-control" id="adresse2" name="adresse2" value="{{ formData.adresse2|default('') }}">
+        </div>
+        <div class="mb-3">
+            <label for="ville" class="form-label">Ville:</label>
+            <input type="text" class="form-control" id="ville" name="ville" value="{{ formData.ville|default('') }}" required>
+        </div>
+        
+        <div id="article-1" class="article-section">
+            <h2>Article 1</h2>
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label for="quantite" class="form-label">Quantité:</label>
+                    <input type="number" class="form-control" id="quantite" name="quantite" value="{{ formData.quantite|default('') }}" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="designation" class="form-label">Désignation:</label>
+                    <input type="text" class="form-control" id="designation" name="designation" value="{{ formData.designation|default('') }}" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="prixUnitaire" class="form-label">Prix Unitaire:</label>
+                    <input type="text" class="form-control" id="prixUnitaire" name="prixUnitaire" value="{{ formData.prixUnitaire|default('') }}" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="montant" class="form-label">Montant:</label>
+                    <input type="text" class="form-control" id="montant" name="montant" value="{{ formData.montant|default('') }}" required>
+                </div>
+            </div>
+        </div>
+        
+        {% for i in 2..8 %}
+        <div id="article-{{ i }}" class="article-section" style="display: none;">
+            <h2>Article {{ i }}</h2>
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label for="quantite{{ i-1 }}" class="form-label">Quantité:</label>
+                    <input type="number" class="form-control" id="quantite{{ i-1 }}" name="quantite{{ i-1 }}" value="{{ attribute(formData, 'quantite'~(i-1))|default('') }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="designation{{ i-1 }}" class="form-label">Désignation:</label>
+                    <input type="text" class="form-control" id="designation{{ i-1 }}" name="designation{{ i-1 }}" value="{{ attribute(formData, 'designation'~(i-1))|default('') }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="prixUnitaire{{ i-1 }}" class="form-label">Prix Unitaire:</label>
+                    <input type="text" class="form-control" id="prixUnitaire{{ i-1 }}" name="prixUnitaire{{ i-1 }}" value="{{ attribute(formData, 'prixUnitaire'~(i-1))|default('') }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="montant{{ i-1 }}" class="form-label">Montant:</label>
+                    <input type="text" class="form-control" id="montant{{ i-1 }}" name="montant{{ i-1 }}" value="{{ attribute(formData, 'montant'~(i-1))|default('') }}">
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
+        <div class="mb-3">
+            <button type="button" class="btn btn-secondary" id="next-article-btn">Voir l'article suivant</button>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Mettre à jour la facture</button>
+        </div>
+    </form>
+</div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let currentArticle = 1;
+        const totalArticles = 8;
+        document.getElementById('next-article-btn').addEventListener('click', function () {
+            if (currentArticle < totalArticles) {
+                currentArticle++;
+                document.getElementById('article-' + currentArticle).style.display = 'block';
+            }
+        });
+    });
+</script>
 
 {% endblock %}

@@ -26,6 +26,7 @@ class MAJFactureController extends AbstractController
     public function editFacture(Request $request, string $formId): Response
     {
         $formData = $this->loadFormData($formId);
+        $formData['id'] = $formId; // Ajoutez l'ID au tableau de données
 
         if ($request->isMethod('POST')) {
             $updatedFormData = $request->request->all();
@@ -37,7 +38,10 @@ class MAJFactureController extends AbstractController
             return $this->redirectToRoute('app_confirmation', ['pdf_path' => $pdfPath]);
         }
 
-        return $this->render('maj_facture/edit.html.twig', ['formData' => $formData]);
+        return $this->render('maj_facture/edit.html.twig', [
+            'formData' => $formData,
+            'formId' => $formId
+        ]);
     }
 
     private function generatePdf(array $formData): string
@@ -152,7 +156,7 @@ class MAJFactureController extends AbstractController
             mkdir($directory, 0777, true);
         }
 
-        $suffix = $isModified ? '_modifier' : '';
+        $suffix = $isModified ? '_Maj' : '';
         $pdfPath = $directory . '/' . uniqid('pdf_') . $suffix . '.pdf';
         file_put_contents($pdfPath, $pdfContent);
         return $pdfPath;
@@ -188,7 +192,7 @@ class MAJFactureController extends AbstractController
         if (is_dir($directory)) {
             foreach (glob($directory . '/*.json') as $filePath) {
                 $factureData = json_decode(file_get_contents($filePath), true);
-                $factureData['id'] = basename($filePath, '.json');
+                $factureData['id'] = basename($filePath, '.json'); // Add the file name (without extension) as the ID
                 $factures[] = $factureData;
             }
         }
