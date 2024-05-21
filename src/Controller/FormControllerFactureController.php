@@ -10,79 +10,77 @@ use TCPDF;
 
 class FormControllerFactureController extends AbstractController
 {
+    private $invoiceNumberFile = 'invoice_number.json';
+
     #[Route('/form/controller/facture', name: 'app_form_controller_facture', methods: ['GET', 'POST'])]
     public function form(Request $request): Response
     {
-        // Check if the form has been submitted
         if ($request->isMethod('POST')) {
-            // Retrieve submitted data
             $formData = $request->request->all();
 
-            // Save the form data in a JSON file (or database)
+            // Get the next invoice number
+            $invoiceNumber = $this->getNextInvoiceNumber();
+
+            // Add the invoice number to form data
+            $formData['numero'] = $invoiceNumber;
+
+            // Save the form data in a JSON file
             $formId = uniqid();
             $formPath = $this->saveFormData($formId, $formData);
 
             // Generate the PDF with the submitted data
             $pdfContent = $this->generatePdf($formData);
 
-            // Save the PDF on the server
-            $pdfPath = $this->savePdf($pdfContent);
+            // Save the PDF on the server with the invoice number as the name
+            $pdfPath = $this->savePdf($pdfContent, $invoiceNumber);
 
             // Redirect to the confirmation page with the path to the PDF and form data
             return $this->redirectToRoute('app_confirmation', ['pdf_path' => $pdfPath, 'form_path' => $formPath]);
         }
 
-        // Display the form
         return $this->render('form_controller_facture/index.html.twig');
     }
 
     #[Route('/form/controller/facture/edit/{formId}', name: 'app_form_controller_facture_edit', methods: ['GET', 'POST'])]
     public function editForm(Request $request, string $formId): Response
     {
-        // Load the form data from JSON file (or database)
         $formData = $this->loadFormData($formId);
 
         if ($request->isMethod('POST')) {
-            // Update form data with new submissions
             $updatedFormData = $request->request->all();
             $this->saveFormData($formId, $updatedFormData);
 
             // Generate the updated PDF with the new data
             $pdfContent = $this->generatePdf($updatedFormData);
 
-            // Save the updated PDF on the server
-            $pdfPath = $this->savePdf($pdfContent);
+            // Save the updated PDF on the server with the invoice number as the name
+            $numero = $updatedFormData['numero'] ?? 'invoice';
+            $pdfPath = $this->savePdf($pdfContent, $numero);
 
-            // Redirect to the confirmation page with the updated PDF path
             return $this->redirectToRoute('app_confirmation', ['pdf_path' => $pdfPath]);
         }
 
-        // Display the form with existing data
         return $this->render('form_controller_facture/edit.html.twig', ['formData' => $formData]);
     }
 
     private function generatePdf(array $formData): string {
-        // Create new TCPDF instance
         $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
         $pdf->SetMargins(10, 10, 10);
         $pdf->SetFont('helvetica', '', 10);
         $pdf->AddPage();
 
-        // Extracting variables from the formData array
         $numero = $formData['numero'] ?? '';
         $date = $formData['date'] ?? '';
         $adresse1 = $formData['adresse1'] ?? '';
         $adresse2 = $formData['adresse2'] ?? '';
         $ville = $formData['ville'] ?? '';
 
-        // Header setup
         $pdf->SetFont('helvetica', 'B', 14);
-        $pdf->Cell(0, 10, 'LUDOVIC AUBAGUE', 0, 0); // Left align
+        $pdf->Cell(0, 10, 'LUDOVIC AUBAGUE', 0, 0); 
         $pdf->SetFont('helvetica', 'B', 14);
-        $pdf->Cell(0, 10, 'FACTURE', 0, 1, 'R'); // Right align
-        $pdf->Ln(20); // Space for header separation
+        $pdf->Cell(0, 10, 'FACTURE', 0, 1, 'R'); 
+        $pdf->Ln(20); 
 
-        // Contact information
         $pdf->SetFont('helvetica', '', 10);
         $pdf->Cell(0, 10, 'ludovic.aubague.plomberie@gmail.com', 0, 1, 'L');
         $pdf->Cell(0, 10, '898 route de Noaillat, 01 290 Cormoranche Sur Saône', 0, 1, 'L');
@@ -90,7 +88,6 @@ class FormControllerFactureController extends AbstractController
         $pdf->Cell(0, 10, 'RCDP:2021012714511665-17-F', 0, 1, 'L');
         $pdf->Ln(20);
 
-        // Billing part
         $pdf->SetFont('helvetica', 'B', 10);
         $pdf->Cell(100, 10, 'Facturé à', 0, 0, 'L');
         $pdf->SetFont('helvetica', '', 10);
@@ -102,7 +99,6 @@ class FormControllerFactureController extends AbstractController
         $pdf->Cell(0, 10, $ville, 0, 0, 'L');
         $pdf->Ln(20);
 
-        // Table setup
         $pdf->SetXY(10, 150);
         $cellHeight = 8;
         $pdf->SetFont('helvetica', 'B', 10);
@@ -132,11 +128,10 @@ class FormControllerFactureController extends AbstractController
             }
         }
 
-        // Summarize totals and tax
         $pdf->Cell(164, $cellHeight, 'TOTAL HT', 0, 0, 'L');
         $pdf->Cell(28, $cellHeight, sprintf("%.2f €", $totalHT), 1, 1, 'C');
 
-        $tva = $totalHT * 0.0; // Adjust if tax rate changes
+        $tva = $totalHT * 0.0; 
         $pdf->Cell(164, $cellHeight, 'TVA 0%', 0, 0, 'L');
         $pdf->Cell(28, $cellHeight, sprintf("%.2f €", $tva), 1, 1, 'C');
 
@@ -144,17 +139,15 @@ class FormControllerFactureController extends AbstractController
         $pdf->Cell(164, $cellHeight, 'TOTAL TTC', 0, 0, 'L');
         $pdf->Cell(28, $cellHeight, sprintf("%.2f €", $totalTTC), 1, 1, 'C');
 
-        // Check if there is enough space for the conditions at the bottom of the page
         $remainingSpace = $pdf->getPageHeight() - $pdf->GetY() - $pdf->getMargins()['bottom'];
-        $requiredSpace = 40; // Approximate height needed for the payment conditions section
+        $requiredSpace = 40; 
 
-        if ($remainingSpace < $requiredSpace + 30) { // Add a 30mm buffer
+        if ($remainingSpace < $requiredSpace + 30) { 
             $pdf->AddPage();
         } else {
-            $pdf->Ln(30); // Ensure 30mm distance from the table above
+            $pdf->Ln(30); 
         }
 
-        // Payment conditions at the bottom left
         $pdf->SetFont('helvetica', 'B', 10);
         $pdf->Cell(0, 10, 'Conditions et modalités de paiement', 0, 1, 'L');
         $pdf->SetFont('helvetica', '', 10);
@@ -165,16 +158,26 @@ class FormControllerFactureController extends AbstractController
         return $pdf->Output('', 'S');
     }
 
-    private function savePdf(string $pdfContent): string
+    private function savePdf(string $pdfContent, string $invoiceNumber): string
     {
-        $pdfPath = 'pdf/' . uniqid('pdf_') . '.pdf';
+        $directory = 'pdf';
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+
+        $pdfPath = $directory . '/Facture' . $invoiceNumber . '.pdf';
         file_put_contents($pdfPath, $pdfContent);
         return $pdfPath;
     }
 
     private function saveFormData(string $formId, array $formData): string
     {
-        $formPath = 'forms/' . $formId . '.json';
+        $directory = 'forms';
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+
+        $formPath = $directory . '/' . $formId . '.json';
         file_put_contents($formPath, json_encode($formData));
         return $formPath;
     }
@@ -187,5 +190,21 @@ class FormControllerFactureController extends AbstractController
         }
 
         return [];
+    }
+
+    private function getNextInvoiceNumber(): int
+    {
+        $file = $this->invoiceNumberFile;
+        if (!file_exists($file)) {
+            file_put_contents($file, json_encode(['last_invoice_number' => 299]));
+        }
+
+        $data = json_decode(file_get_contents($file), true);
+        $nextInvoiceNumber = $data['last_invoice_number'] + 1;
+
+        $data['last_invoice_number'] = $nextInvoiceNumber;
+        file_put_contents($file, json_encode($data));
+
+        return $nextInvoiceNumber;
     }
 }
