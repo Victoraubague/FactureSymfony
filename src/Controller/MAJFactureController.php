@@ -1,67 +1,47 @@
 <?php
+// src/Controller/MAJFactureController.php
 
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use TCPDF;
 
-class FormControllerFactureController extends AbstractController
+class MAJFactureController extends AbstractController
 {
-    #[Route('/form/controller/facture', name: 'app_form_controller_facture', methods: ['GET', 'POST'])]
-    public function form(Request $request): Response
+    #[Route('/maj/facture', name: 'app_factures_index')]
+    public function index(): Response
     {
-        // Check if the form has been submitted
-        if ($request->isMethod('POST')) {
-            // Retrieve submitted data
-            $formData = $request->request->all();
+        // Lire toutes les factures depuis les fichiers JSON
+        $factures = $this->loadAllFormData();
 
-            // Save the form data in a JSON file (or database)
-            $formId = uniqid();
-            $formPath = $this->saveFormData($formId, $formData);
-
-            // Generate the PDF with the submitted data
-            $pdfContent = $this->generatePdf($formData);
-
-            // Save the PDF on the server
-            $pdfPath = $this->savePdf($pdfContent);
-
-            // Redirect to the confirmation page with the path to the PDF and form data
-            return $this->redirectToRoute('app_confirmation', ['pdf_path' => $pdfPath, 'form_path' => $formPath]);
-        }
-
-        // Display the form
-        return $this->render('form_controller_facture/index.html.twig');
+        return $this->render('maj_facture/index.html.twig', [
+            'factures' => $factures,
+        ]);
     }
 
-    #[Route('/form/controller/facture/edit/{formId}', name: 'app_form_controller_facture_edit', methods: ['GET', 'POST'])]
-    public function editForm(Request $request, string $formId): Response
+    #[Route('/maj/facture/edit/{formId}', name: 'app_maj_facture_edit', methods: ['GET', 'POST'])]
+    public function editFacture(Request $request, string $formId): Response
     {
-        // Load the form data from JSON file (or database)
         $formData = $this->loadFormData($formId);
 
         if ($request->isMethod('POST')) {
-            // Update form data with new submissions
             $updatedFormData = $request->request->all();
             $this->saveFormData($formId, $updatedFormData);
 
-            // Generate the updated PDF with the new data
             $pdfContent = $this->generatePdf($updatedFormData);
+            $pdfPath = $this->savePdf($pdfContent, true);  // Pass true to indicate modification
 
-            // Save the updated PDF on the server
-            $pdfPath = $this->savePdf($pdfContent);
-
-            // Redirect to the confirmation page with the updated PDF path
             return $this->redirectToRoute('app_confirmation', ['pdf_path' => $pdfPath]);
         }
 
-        // Display the form with existing data
-        return $this->render('form_controller_facture/edit.html.twig', ['formData' => $formData]);
+        return $this->render('maj_facture/edit.html.twig', ['formData' => $formData]);
     }
 
-    private function generatePdf(array $formData): string {
+    private function generatePdf(array $formData): string
+    {
         // Create new TCPDF instance
         $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
         $pdf->SetMargins(10, 10, 10);
@@ -114,9 +94,9 @@ class FormControllerFactureController extends AbstractController
         $totalHT = 0;
         $pdf->SetFont('helvetica', '', 10);
         for ($i = 0; $i <= 7; $i++) {
-            $quantite = (int) $formData['quantite' . ($i == 0 ? '' : $i)] ?? 0;
+            $quantite = (int) ($formData['quantite' . ($i == 0 ? '' : $i)] ?? 0);
             $designation = $formData['designation' . ($i == 0 ? '' : $i)] ?? '';
-            $prixUnitaire = (float) $formData['prixUnitaire' . ($i == 0 ? '' : $i)] ?? 0;
+            $prixUnitaire = (float) ($formData['prixUnitaire' . ($i == 0 ? '' : $i)] ?? 0);
 
             if (!empty($quantite) && !empty($designation) && !empty($prixUnitaire)) {
                 $montant = $quantite * $prixUnitaire;
@@ -165,16 +145,27 @@ class FormControllerFactureController extends AbstractController
         return $pdf->Output('', 'S');
     }
 
-    private function savePdf(string $pdfContent): string
+    private function savePdf(string $pdfContent, bool $isModified = false): string
     {
-        $pdfPath = 'pdf/' . uniqid('pdf_') . '.pdf';
+        $directory = 'pdf';
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+
+        $suffix = $isModified ? '_modifier' : '';
+        $pdfPath = $directory . '/' . uniqid('pdf_') . $suffix . '.pdf';
         file_put_contents($pdfPath, $pdfContent);
         return $pdfPath;
     }
 
     private function saveFormData(string $formId, array $formData): string
     {
-        $formPath = 'forms/' . $formId . '.json';
+        $directory = 'forms';
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+
+        $formPath = $directory . '/' . $formId . '.json';
         file_put_contents($formPath, json_encode($formData));
         return $formPath;
     }
@@ -187,5 +178,21 @@ class FormControllerFactureController extends AbstractController
         }
 
         return [];
+    }
+
+    private function loadAllFormData(): array
+    {
+        $directory = 'forms';
+        $factures = [];
+
+        if (is_dir($directory)) {
+            foreach (glob($directory . '/*.json') as $filePath) {
+                $factureData = json_decode(file_get_contents($filePath), true);
+                $factureData['id'] = basename($filePath, '.json');
+                $factures[] = $factureData;
+            }
+        }
+
+        return $factures;
     }
 }

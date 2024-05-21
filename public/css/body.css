@@ -56,7 +56,6 @@ body {
     overflow: hidden;
 }
 
-/* Sidebar Specific Styles */
 .sidebar {
     background-color: #f8f9fa;
     border-right: 1px solid #dee2e6;
@@ -89,4 +88,23 @@ body {
 .sidebar-item.active {
     background-color: #007bff;
     color: #fff;
+}
+
+/* Home page specific styles */
+.jumbotron {
+    background-color: #007bff;
+    color: white;
+    padding: 2rem 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.jumbotron .btn-primary {
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+.jumbotron .btn-primary:hover {
+    background-color: #495057;
+    border-color: #495057;
 }
