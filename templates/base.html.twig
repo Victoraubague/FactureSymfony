@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
+    <title>{% block title %}BVN!{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.1/css/font-awesome.min.css">
     {% block stylesheets %}
@@ -18,17 +18,16 @@
                     <a class="navbar-brand flex-shrink-0" href=""><img src="https://yudiz.com/codepen/nft-store/logo-icon.svg" alt="logo-image" class="img-fluid">
                       Ludo Facture</a>
                     <div class="header-content d-flex align-items-center justify-content-end">
-                        <form class="d-flex justify-content-end align-items-center">
-                            <div class="search-icon">
-                                <i class="fa fa-search" aria-hidden="true"></i>
-                                <input class="form-control" type="search" placeholder="Chercher une facture" aria-label="Search">
+                        <form class="d-flex justify-content-end align-items-center" method="get" action="{{ path('app_factures_index') }}">
+                            <div class="search-icon position-relative">
+                                <i class="fa fa-search position-absolute" aria-hidden="true" style="right: 10px; top: 50%; transform: translateY(-50%);"></i>
+                                <input class="form-control mr-sm-2" type="search" name="client" placeholder="Chercher une facture" aria-label="Search" style="padding-right: 30px;">
                             </div>
-                            <label class="switch flex-shrink-0 mb-0">
-                                <input id="checkbox" type="checkbox">
-                                <span class="slider round"></span>
-                            </label>
                         </form>
-                        
+                        <label class="switch flex-shrink-0 mb-0 ml-3">
+                            <input id="checkbox" type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
                     </div>
                 </div>
                 <button class="hamburger-icon">
@@ -56,8 +55,6 @@
                     <a href="http://127.0.0.1:8000/maj/facture" class="d-flex align-items-center nav-link"><i class="fa fa-heart-o" aria-hidden="true"></i>
                         <span>Mettre a jour une facture</span></a>
                 </li>
-        
-        
                 <li class="nav-item">
                     <a href="http://127.0.0.1:8000/confirmation" class="d-flex align-items-center nav-link"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
                         <span>Toutes les factures</span></a>
@@ -71,10 +68,8 @@
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
-       
-            <div class="container mt-4">
-                {% block body %}{% endblock %}
-            </div>
+        <div class="container mt-4">
+            {% block body %}{% endblock %}
         </div>
         <!-- /#page-content-wrapper -->
     </div>

@@ -50,11 +50,8 @@
                     <label for="prixUnitaire" class="form-label">Prix Unitaire:</label>
                     <input type="text" class="form-control" id="prixUnitaire" name="prixUnitaire" value="{{ formData.prixUnitaire|default('') }}" required>
                 </div>
-                <div class="col-md-3">
-                    <label for="montant" class="form-label">Montant:</label>
-                    <input type="text" class="form-control" id="montant" name="montant" value="{{ formData.montant|default('') }}" required>
-                </div>
-            </div>
+                
+            
         </div>
         
         {% for i in 2..8 %}
