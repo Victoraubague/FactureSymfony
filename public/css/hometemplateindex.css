@@ -1,0 +1,97 @@
+
+
+.home-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Hero section */
+.hero-section {
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    padding: 60px 20px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+
+.hero-title {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.hero-subtitle {
+    font-size: 1.25em;
+    margin-bottom: 40px;
+}
+
+.hero-button {
+    background-color: #ff6347;
+    color: #fff;
+    padding: 15px 30px;
+    font-size: 1em;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.hero-button:hover {
+    background-color: #e5533d;
+}
+
+/* Features section */
+.features-section {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.feature {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    flex: 1 1 calc(33% - 20px);
+    margin-bottom: 20px;
+}
+
+.feature-image {
+    max-width: 100px;
+    margin-bottom: 20px;
+}
+
+.feature-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.feature-description {
+    font-size: 1em;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2em;
+    }
+
+    .hero-subtitle {
+        font-size: 1em;
+    }
+
+    .hero-button {
+        font-size: 0.9em;
+        padding: 10px 20px;
+    }
+
+    .features-section {
+        flex-direction: column;
+    }
+
+    .feature {
+        flex: 1 1 100%;
+    }
+}

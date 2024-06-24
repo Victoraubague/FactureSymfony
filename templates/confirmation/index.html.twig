@@ -4,16 +4,19 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/body.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/liste_pdf.css') }}">
 {% endblock %}
 
 {% block body %}
 <div class="pdf-list-wrapper">
-    <h1>Liste des PDF</h1>
-    <ul>
+    <h1 class="mb-4">Liste des PDF</h1>
+    <ul class="list-group">
         {% for pdf in pdfFiles %}
-            <li><a href="{{ asset('pdf/' ~ pdf) }}" target="_blank">{{ pdf }}</a></li>
+            <li class="list-group-item">
+                <a href="{{ asset('pdf/' ~ pdf) }}" target="_blank">{{ pdf }}</a>
+            </li>
         {% else %}
-            <li>Aucun fichier PDF trouvé.</li>
+            <li class="list-group-item">Aucun fichier PDF trouvé.</li>
         {% endfor %}
     </ul>
 </div>

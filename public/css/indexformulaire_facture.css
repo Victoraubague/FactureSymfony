@@ -1,14 +1,15 @@
-.form-wrapper  h1{
-    color: rgb(5, 5, 5);
+.form-container h1{
+    color: #292b2c;
 }
-.form-wrapper {
+
+.form-container {
+    color: #545b62;
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
     margin: 40px auto;
-    color: rgb(5, 5, 5);
 }
 
 .article-section {

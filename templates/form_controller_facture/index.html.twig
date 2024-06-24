@@ -4,15 +4,14 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/body.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/indexformulaire_facture.css') }}">
 {% endblock %}
 
 {% block body %}
   
-    <!-- /#sidebar-wrapper -->
-
     <!-- Page Content -->
 
-    <div class="container-fluid mt-4">
+    <div class="container-fluid mt-4 form-container">
         <h1 class="mb-4">Formulaire Facture</h1>
         <form method="post" action="{{ path('app_form_controller_facture') }}">
             <div class="row mb-3">

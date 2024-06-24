@@ -1,25 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/body.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/templateindex.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/hometemplateindex.css') }}">
 {% endblock %}
 
 {% block body %}
 <div class="home-content">
-    <div class="jumbotron text-center">
-        <h1 class="display-4">Welcome to Our Invoice Management System!</h1>
-        <p class="lead">Easily manage and generate your invoices.</p>
-        <hr class="my-4">
-        <p>Use the sidebar to navigate through different sections of the site.</p>
-    </div>
-    <div class="text-center">
-        <img src="{{ asset('image/Facture.png') }}" class="img-fluid mb-4 invoice-image" alt="Invoice Image">
-    </div>
-    <div class="text-center">
-        <a href="{{ path('app_form_controller_facture') }}" class="btn btn-primary btn-lg">Create a New Invoice</a>
-    </div>
+    <header class="hero-section">
+        <h1 class="hero-title">Bienvenue sur notre système de gestion des factures!</h1>
+        <p class="hero-subtitle">Gérez et générez facilement vos factures.</p>
+        <a href="{{ path('app_form_controller_facture') }}" class="hero-button">Créer une nouvelle facture</a>
+    </header>
+    <section class="features-section">
+        <div class="feature">
+            <img src="{{ asset('image/Facture.png') }}" alt="Image de facture" class="feature-image">
+            <h2 class="feature-title">Gestion efficace des factures</h2>
+            <p class="feature-description">Gérez toutes vos factures efficacement avec notre système.</p>
+        </div>
+        <div class="feature">
+            <img src="{{ asset('image/Secure.png') }}" alt="Image sécurisée" class="feature-image">
+            <h2 class="feature-title">Sécurisé et fiable</h2>
+            <p class="feature-description">Vos données sont sécurisées grâce à nos fonctionnalités de sécurité de pointe.</p>
+        </div>
+        <div class="feature">
+            <img src="{{ asset('image/Fast.png') }}" alt="Image rapide" class="feature-image">
+            <h2 class="feature-title">Rapide et convivial</h2>
+            <p class="feature-description">Expérience rapide et facile de génération et de gestion des factures.</p>
+        </div>
+        <div class="feature">
+            <img src="{{ asset('image/Customizable.png') }}" alt="Image personnalisable" class="feature-image">
+            <h2 class="feature-title">Personnalisable</h2>
+            <p class="feature-description">Adaptez le système à vos besoins et préférences spécifiques.</p>
+        </div>
+        <div class="feature">
+            <img src="{{ asset('image/Support.png') }}" alt="Image de support" class="feature-image">
+            <h2 class="feature-title">Support 24/7</h2>
+            <p class="feature-description">Obtenez de l'aide à tout moment avec notre support disponible 24/7.</p>
+        </div>
+        <div class="feature">
+            <img src="{{ asset('image/Integration.png') }}" alt="Image d'intégration" class="feature-image">
+            <h2 class="feature-title">Intégration facile</h2>
+            <p class="feature-description">Intégrez facilement avec vos outils et flux de travail existants.</p>
+        </div>
+    </section>
 </div>
 {% endblock %}
