@@ -4,10 +4,11 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/body.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/formulaire_facture.css') }}">
 {% endblock %}
 
 {% block body %}
-<div class="example-wrapper">
+<div class="form-wrapper">
     <h1>Mettre à jour la facture</h1>
 
     <form method="post" action="{{ path('app_maj_facture_edit', {'formId': formId}) }}">

@@ -2,6 +2,11 @@
 
 {% block title %}Liste des factures{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/body.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/liste_factures.css') }}">
+{% endblock %}
+
 {% block body %}
 <div class="container mt-4">
     <h1 class="mb-4">Liste des factures</h1>
@@ -16,7 +21,7 @@
         </div>
     </form>
 
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Numéro</th>
