@@ -1,0 +1,13 @@
+/* CSS specific to the home page content */
+.home-content {
+    padding: 20px;
+}
+
+.home-content .jumbotron {
+    background-color: #5489be;
+    padding: 2rem 1rem;
+}
+
+.home-content .invoice-image {
+    max-width: 50%;
+}

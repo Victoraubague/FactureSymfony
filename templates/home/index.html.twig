@@ -4,19 +4,22 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/body.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/templateindex.css') }}">
 {% endblock %}
 
 {% block body %}
-<div class="jumbotron text-center">
-    <h1 class="display-4">Welcome to Our Invoice Management System!</h1>
-    <p class="lead">Easily manage and generate your invoices.</p>
-    <hr class="my-4">
-    <p>Use the sidebar to navigate through different sections of the site.</p>
-</div>
-<div class="text-center">
-    <img src="{{ asset('image/Facture.png') }}" class="img-fluid mb-4" alt="Invoice Image" style="max-width: 50%;">
-</div>
-<div class="text-center">
-    <a href="{{ path('app_form_controller_facture') }}" class="btn btn-primary btn-lg">Create a New Invoice</a>
+<div class="home-content">
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Welcome to Our Invoice Management System!</h1>
+        <p class="lead">Easily manage and generate your invoices.</p>
+        <hr class="my-4">
+        <p>Use the sidebar to navigate through different sections of the site.</p>
+    </div>
+    <div class="text-center">
+        <img src="{{ asset('image/Facture.png') }}" class="img-fluid mb-4 invoice-image" alt="Invoice Image">
+    </div>
+    <div class="text-center">
+        <a href="{{ path('app_form_controller_facture') }}" class="btn btn-primary btn-lg">Create a New Invoice</a>
+    </div>
 </div>
 {% endblock %}

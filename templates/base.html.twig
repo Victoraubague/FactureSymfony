@@ -4,21 +4,74 @@
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.1/css/font-awesome.min.css">
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('css/body.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     {% endblock %}
 </head>
-<body>
+<body class="light-theme dark-theme">
+    <header>
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="header-inner d-flex justify-content-between align-items-center">
+                    <a class="navbar-brand flex-shrink-0" href=""><img src="https://yudiz.com/codepen/nft-store/logo-icon.svg" alt="logo-image" class="img-fluid">
+                      Ludo Facture</a>
+                    <div class="header-content d-flex align-items-center justify-content-end">
+                        <form class="d-flex justify-content-end align-items-center">
+                            <div class="search-icon">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                                <input class="form-control" type="search" placeholder="Chercher une facture" aria-label="Search">
+                            </div>
+                            <label class="switch flex-shrink-0 mb-0">
+                                <input id="checkbox" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </form>
+                        
+                    </div>
+                </div>
+                <button class="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
     <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
-        {% include 'navbar.html.twig' %}
+        <div class="menu-links">
+            <ul>
+                <li class="nav-item active">
+                    <a href="http://127.0.0.1:8000/home#" class="d-flex align-items-center nav-link"><i class="fa fa-home" aria-hidden="true"></i>
+                        <span>Accueil</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="http://127.0.0.1:8000/aa#" class="d-flex align-items-center nav-link"><i class="fa fa-briefcase" aria-hidden="true"></i>
+                        <span>Facture</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="d-flex align-items-center nav-link"><i class="fa fa-heart-o" aria-hidden="true"></i>
+                        <span>Favourite</span></a>
+                </li>
+        
+        
+                <li class="nav-item">
+                    <a href="#" class="d-flex align-items-center nav-link"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        <span>Toutes les factures</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="d-flex align-items-center nav-link"><i class="fa fa-cog" aria-hidden="true"></i>
+                        <span>Réglages</span></a>
+                </li>
+            </ul>
+        </div>
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <button class="btn btn-primary" id="menu-toggle">NavBar</button>
-            </nav>
+       
             <div class="container mt-4">
                 {% block body %}{% endblock %}
             </div>
@@ -27,9 +80,10 @@
     </div>
     <!-- /#wrapper -->
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById("menu-toggle").addEventListener('click', function(e) {

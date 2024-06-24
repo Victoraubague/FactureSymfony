@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des Factures{% endblock %}
+{% block title %}Liste des factures{% endblock %}
 
 {% block body %}
-<div class="container-fluid mt-4">
-    <h1 class="mb-4">Liste des Factures</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">Liste des factures</h1>
 
     <form method="get" action="{{ path('app_factures_index') }}">
         <div class="mb-3">
@@ -16,11 +16,10 @@
         </div>
     </form>
 
-    {% if factures is not empty %}
-    <table class="table table-striped">
+    <table class="table">
         <thead>
             <tr>
-                <th>Numéro de Facture</th>
+                <th>Numéro</th>
                 <th>Date</th>
                 <th>Client</th>
                 <th>Actions</th>
@@ -28,19 +27,20 @@
         </thead>
         <tbody>
             {% for facture in factures %}
-            <tr>
-                <td>{{ facture.numero }}</td>
-                <td>{{ facture.date }}</td>
-                <td>{{ facture.client }}</td>
-                <td>
-                    <a href="{{ path('app_maj_facture_edit', { formId: facture.id }) }}" class="btn btn-warning">Modifier</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>{{ facture.numero }}</td>
+                    <td>{{ facture.date }}</td>
+                    <td>{{ facture.client }}</td>
+                    <td>
+                        <a href="{{ path('app_maj_facture_edit', {formId: facture.id}) }}" class="btn btn-secondary btn-sm">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucune facture trouvée.</td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
-    {% else %}
-    <p>Aucune facture trouvée.</p>
-    {% endif %}
 </div>
 {% endblock %}
