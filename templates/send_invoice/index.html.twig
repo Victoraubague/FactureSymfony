@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Envoyer un email de test{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">Envoyer un email de test</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
+    <form method="post" action="{{ path('app_send_invoice') }}" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="email" class="form-label">Adresse Email:</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="attachment" class="form-label">Pièce jointe:</label>
+            <input type="file" class="form-control" id="attachment" name="attachment">
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

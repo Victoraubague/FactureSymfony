@@ -291,3 +291,7 @@ input:checked + .slider:before {-webkit-transform: translateX(26px);-ms-transfor
     .trending-desc .bid h5{margin-bottom: 4px;}
     .trending-desc .bid span{font-size: 16px; line-height: 24px;}
 }
+.container.mt-4{
+    
+    box-shadow: 20px;
+}
