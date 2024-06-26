@@ -10,3 +10,13 @@ app_maj_facture_payer:
 app_maj_facture_non_payer:
     path: /maj/facture/non-payer/{formId}
     controller: 'App\Controller\FactureController::marquerCommeNonPayee'
+app_login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+
+app_logout:
+    path: /logout
+
+app_register:
+    path: /register
+    controller: App\Controller\RegistrationController::register
