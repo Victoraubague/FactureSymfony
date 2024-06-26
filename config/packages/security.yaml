@@ -1,7 +1,10 @@
 security:
+    # Encoders / Hashers
     password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        App\Entity\User:
+            algorithm: auto
 
+    # Providers
     providers:
         app_user_provider:
             entity:
@@ -16,21 +19,27 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+
             form_login:
                 login_path: app_login
                 check_path: app_login
-                default_target_path: app_home
+                username_parameter: _email
+                password_parameter: _password
+                default_target_path: /home
+
             logout:
                 path: app_logout
-                target: app_home
-            entry_point: form_login
+                target: app_login
 
-
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path: /
+                name: REMEMBERME
 
     access_control:
-        - { path: ^/settings, roles: ROLE_USER }
         - { path: ^/login$, roles: PUBLIC_ACCESS }
         - { path: ^/register$, roles: PUBLIC_ACCESS }
+        - { path: ^/settings, roles: ROLE_USER }
         - { path: ^/home$, roles: ROLE_USER }
         - { path: ^/, roles: ROLE_USER }
-
