@@ -15,19 +15,28 @@
         <div class="container-fluid">
             <nav class="navbar navbar-expand-lg navbar-light">
                 <div class="header-inner d-flex justify-content-between align-items-center">
-                    <a class="navbar-brand flex-shrink-0" href=""><img src="https://yudiz.com/codepen/nft-store/logo-icon.svg" alt="logo-image" class="img-fluid">
-                      Ludo Facture</a>
+                    <a class="navbar-brand flex-shrink-0" href="#">
+                        <img src="https://yudiz.com/codepen/nft-store/logo-icon.svg" alt="logo-image" class="img-fluid"> Ludo Facture
+                    </a>
                     <div class="header-content d-flex align-items-center justify-content-end">
-                        <form class="d-flex justify-content-end align-items-center" method="get" action="{{ path('app_factures_index') }}">
-                            <div class="search-icon position-relative">
-                                <i class="fa fa-search position-absolute" aria-hidden="true" style="right: 10px; top: 50%; transform: translateY(-50%);"></i>
-                                <input class="form-control mr-sm-2" type="search" name="client" placeholder="Chercher une facture" aria-label="Search" style="padding-right: 30px;">
+                        <form class="d-flex justify-content-end align-items-center">
+                            <div class="search-icon">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                                <input class="form-control" type="search" placeholder="Chercher une facture" aria-label="Search">
                             </div>
+                            <label class="switch flex-shrink-0 mb-0">
+                                <input id="checkbox" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
                         </form>
-                        <label class="switch flex-shrink-0 mb-0 ml-3">
-                            <input id="checkbox" type="checkbox">
-                            <span class="slider round"></span>
-                        </label>
+                        {% if app.user %}
+                            <a href="#" class="profile">
+                                <img src="https://yudiz.com/codepen/nft-store/user-pic1.svg" alt="user-image">
+                                {{ app.user.email }}
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_login') }}" class="btn btn-primary">Login</a>
+                        {% endif %}
                     </div>
                 </div>
                 <button class="hamburger-icon">
@@ -44,27 +53,23 @@
         <div class="menu-links">
             <ul>
                 <li class="nav-item active">
-                    <a href="http://127.0.0.1:8000/home#" class="d-flex align-items-center nav-link"><i class="fa fa-home" aria-hidden="true"></i>
+                    <a href="{{ path('app_home') }}" class="d-flex align-items-center nav-link"><i class="fa fa-home" aria-hidden="true"></i>
                         <span>Accueil</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="http://127.0.0.1:8000/form/controller/facture" class="d-flex align-items-center nav-link"><i class="fa fa-briefcase" aria-hidden="true"></i>
+                    <a href="{{ path('app_form_controller_facture') }}" class="d-flex align-items-center nav-link"><i class="fa fa-briefcase" aria-hidden="true"></i>
                         <span>Facture</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="http://127.0.0.1:8000/maj/facture" class="d-flex align-items-center nav-link"><i class="fa fa-heart-o" aria-hidden="true"></i>
-                        <span>Mettre a jour une facture</span></a>
+                    <a href="{{ path('app_factures_index') }}" class="d-flex align-items-center nav-link"><i class="fa fa-heart-o" aria-hidden="true"></i>
+                        <span>Mettre à jour une facture</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="http://127.0.0.1:8000/confirmation" class="d-flex align-items-center nav-link"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    <a href="{{ path('app_confirmation') }}" class="d-flex align-items-center nav-link"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
                         <span>Toutes les factures</span></a>
                 </li>
-                  <li class="nav-item">
-                <a href="/send/invoice" class="d-flex align-items-center nav-link"><i class="fa fa-fire" aria-hidden="true"></i>
-                  <span>Envoie de mail</span></a>
-              </li>
                 <li class="nav-item">
-                    <a href="#" class="d-flex align-items-center nav-link"><i class="fa fa-cog" aria-hidden="true"></i>
+                    <a href="{{ path('app_settings') }}" class="d-flex align-items-center nav-link"><i class="fa fa-cog" aria-hidden="true"></i>
                         <span>Réglages</span></a>
                 </li>
             </ul>
