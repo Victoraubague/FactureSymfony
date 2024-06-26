@@ -19,6 +19,22 @@
             <input type="email" class="form-control" id="email" name="email" required>
         </div>
         <div class="mb-3">
+            <label for="template" class="form-label">Modèle de l'email:</label>
+            <select class="form-control" id="template" name="template" required>
+                <option value="template1">Modèle 1</option>
+                <option value="template2">Modèle 2</option>
+                <option value="template3">Modèle 3</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="default_text" class="form-label">Texte par défaut du modèle:</label>
+            <textarea class="form-control" id="default_text" rows="4" readonly></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="custom_text" class="form-label">Texte personnalisé:</label>
+            <textarea class="form-control" id="custom_text" name="custom_text" rows="4"></textarea>
+        </div>
+        <div class="mb-3">
             <label for="attachment" class="form-label">Pièce jointe:</label>
             <input type="file" class="form-control" id="attachment" name="attachment">
         </div>
@@ -27,4 +43,25 @@
         </div>
     </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const templateSelect = document.getElementById('template');
+    const defaultText = document.getElementById('default_text');
+
+    const templates = {
+        'template1': "Bonjour,\n\nVoici votre facture.\n\nCordialement,\nLudo Facture",
+        'template2': "Bonjour,\n\nVous trouverez ci-joint votre facture.\n\nCordialement,\nLudo Facture",
+        'template3': "Bonjour,\n\nMerci de trouver votre facture en pièce jointe.\n\nCordialement,\nLudo Facture"
+    };
+
+    templateSelect.addEventListener('change', function () {
+        const selectedTemplate = templateSelect.value;
+        defaultText.value = templates[selectedTemplate] || '';
+    });
+
+    // Initial load
+    defaultText.value = templates[templateSelect.value] || '';
+});
+</script>
 {% endblock %}

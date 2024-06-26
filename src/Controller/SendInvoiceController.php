@@ -16,6 +16,8 @@ class SendInvoiceController extends AbstractController
     {
         if ($request->isMethod('POST')) {
             $emailAddress = $request->request->get('email');
+            $customText = $request->request->get('custom_text');
+            $template = $request->request->get('template');
             /** @var UploadedFile $uploadedFile */
             $uploadedFile = $request->files->get('attachment');
 
@@ -43,6 +45,23 @@ class SendInvoiceController extends AbstractController
                     }
                 }
 
+                $subject = '';
+                $body = '';
+                switch ($template) {
+                    case 'template1':
+                        $subject = 'Votre facture';
+                        $body = "Bonjour,\n\nVoici votre facture.\n\n" . $customText . "\n\nCordialement,\nLudo Facture";
+                        break;
+                    case 'template2':
+                        $subject = 'Facture disponible';
+                        $body = "Bonjour,\n\nVous trouverez ci-joint votre facture.\n\n" . $customText . "\n\nCordialement,\nLudo Facture";
+                        break;
+                    case 'template3':
+                        $subject = 'Détails de votre facture';
+                        $body = "Bonjour,\n\nMerci de trouver votre facture en pièce jointe.\n\n" . $customText . "\n\nCordialement,\nLudo Facture";
+                        break;
+                }
+
                 try {
                     $response = $client->post('https://bulk.api.mailtrap.io/api/send', [
                         'headers' => [
@@ -57,8 +76,8 @@ class SendInvoiceController extends AbstractController
                             'to' => [
                                 ['email' => $emailAddress],
                             ],
-                            'subject' => 'You are awesome!',
-                            'text' => 'Congrats for sending test email with Mailtrap!',
+                            'subject' => $subject,
+                            'text' => $body,
                             'attachments' => $attachments,
                         ],
                     ]);
