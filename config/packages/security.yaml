@@ -28,7 +28,7 @@ security:
                 default_target_path: /home
 
             logout:
-                path: app_logout
+                path: /logout
                 target: app_login
 
             remember_me:
