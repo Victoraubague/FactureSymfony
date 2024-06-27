@@ -37,7 +37,9 @@
                     <td>{{ facture.date }}</td>
                     <td>{{ facture.client }}</td>
                     <td>
-                        <a href="{{ path('app_maj_facture_edit', {formId: facture.id}) }}" class="btn btn-secondary btn-sm">Modifier</a>
+                                            <a href="{{ path('app_send_invoice', {formId: facture.id}) }}" class="btn btn-secondary btn-sm">Envoyer</a>
+
+                        <a href="{{ path('app_maj_facture_edit', {formId: facture.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
                     </td>
                 </tr>
             {% else %}
