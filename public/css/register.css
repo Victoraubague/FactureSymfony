@@ -1,0 +1,95 @@
+
+
+/* Container for the form */
+.form-wrapper {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+/* Heading */
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #007bff;
+}
+
+/* Form */
+form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.form-group input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+}
+
+.form-group input:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+}
+
+/* Button */
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: #007bff;
+    border: 1px solid #007bff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+.btn:focus {
+    background-color: #0056b3;
+    border-color: #004085;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Alert */
+.alert {
+    padding: 10px 20px;
+    margin-bottom: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
